@@ -309,7 +309,7 @@ public class MCH_EntityPlane extends MCH_EntityAircraft {
     }
 
     @Override
-    public void onUpdateAngles(float partialTicks) {
+    public void onUpdateAngles(float deltaSeconds) {
         if (!this.isDestroyed()) {
             if (this.isGunnerMode) {
                 this.setRotPitch(this.getPitch() * 0.95F);
@@ -334,26 +334,26 @@ public class MCH_EntityPlane extends MCH_EntityAircraft {
                 }
 
                 if (this.moveLeft && !this.moveRight) {
-                    this.setRotYaw(this.getYaw() - 0.6F * gmy * partialTicks);
+                    this.setRotYaw(this.getYaw() - 12.0F * gmy * deltaSeconds);
                 }
 
                 if (this.moveRight && !this.moveLeft) {
-                    this.setRotYaw(this.getYaw() + 0.6F * gmy * partialTicks);
+                    this.setRotYaw(this.getYaw() + 12.0F * gmy * deltaSeconds);
                 }
             } else if (!MCH_Config.MouseControlFlightSimMode.prmBool) {
-                this.rotationByKey(partialTicks);
+                this.rotationByKey(deltaSeconds);
                 this.setRotRoll(this.getRoll() + this.addkeyRotValue * 0.5F * this.getAcInfo().mobilityRoll);
             }
 
-            this.addkeyRotValue = (float) (this.addkeyRotValue * (1.0 - 0.1F * partialTicks));
+            this.addkeyRotValue = (float) (this.addkeyRotValue * (1.0 - 0.1F * deltaSeconds));
             if (!isFly && MathHelper.abs(this.getPitch()) < 40.0F) {
                 this.applyOnGroundPitch(0.97F);
             }
 
             if (this.getNozzleRotation() > 0.001F) {
-                float rot = 1.0F - 0.03F * partialTicks;
+                float rot = 1.0F - 0.03F * deltaSeconds;
                 this.setRotPitch(this.getPitch() * rot);
-                rot = 1.0F - 0.1F * partialTicks;
+                rot = 1.0F - 0.1F * deltaSeconds;
                 this.setRotRoll(this.getRoll() * rot);
             }
         }
